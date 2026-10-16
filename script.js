@@ -66,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             updateStatus('success', `Successfully loaded ${restaurants.length} restaurants`);
             toggleMethodButtons(true);
+            loadButton.textContent = 'Data Loaded';
             
         } catch (error) {
             // Step 6: Handle errors gracefully
