@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                    <div class="restaurant-name">${restaurant.name}</div>
                    <div class="restaurant-cuisine">${restaurant.cuisine}</div>
                    <span class="restaurant-rating">★: ${restaurant.rating}</span>
-                   <span class="restaurant-price">Price: ${restaurant.price}</span>
+                   <span class="restaurant-pricerange">Price: ${restaurant.priceRange}</span>
                 </div>`;
         });
 
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // YOUR CODE HERE:
         const cheapRestaurants = restaurants.filter(function(restaurant) {
-            return restaurant.price === '$';
+            return restaurant.priceRange === '$';
         });
 
         let html = `<p>Found ${cheapRestaurants.length} affordable restaurants:</p>`;
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
             html +=
                 `<div class="restaurant-item">
                      <div class="restaurant-name">${restaurant.name}</div>
-                     <span class="restaurant-price">Price: ${restaurant.price}</span>
+                     <span class="restaurant-pricerange">Price: ${restaurant.priceRange}</span>
                  </div>`;
           });                
         
