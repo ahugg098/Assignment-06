@@ -35,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // YOUR CODE HERE:
         
-        
+        updateStatus('loading', 'Loading restaurant data...');
+        loadButton.disabled = true;
+
         try {
             // Step 2: Use fetch() to load data
             // Hint: const response = await fetch('restaurants.json');
@@ -49,6 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // YOUR CODE HERE:
             
+            const response = await fetch('restaurants.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            restaurants = data;
             
             // Step 5: Show success state and enable buttons
             // Hint: Update statusDisplay classes and message
@@ -56,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // YOUR CODE HERE:
             
+            updateStatus('success', `Successfully loaded ${restaurants.length} restaurants`);
+            toggleMethodButtons(true);
             
         } catch (error) {
             // Step 6: Handle errors gracefully
@@ -64,7 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // YOUR CODE HERE:
             
-            
+            console.error('Error loading data:', error);
+            updateStatus('error', 'Sorry, we couldn\'t load the restaurant data. Please try again later.');
+            toggleMethodButtons(false);
+            loadButton.disabled = false;
+            loadButton.textContent = 'Try Again';
         }
     });
     
@@ -86,8 +100,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hint: restaurants.forEach(function(restaurant) { })
         
         // YOUR CODE HERE:
-        
-        
+        let html = '';
+        restaurants.forEach(function(restaurant) {
+            html +=
+                `<div class="restaurant-item">
+                   <div class="restaurant-name">${restaurant.name}</div>
+                   <div class="restaurant-cuisine">${restaurant.cuisine}</div>
+                   <span class="restaurant-rating">★: ${restaurant.rating}</span>
+                   <span class="restaurant-price">Price: ${restaurant.price}</span>
+                </div>`;
+        });
+
+        restaurantList.innerHTML = html;
     });
     
     // Filter cheap restaurants (same logic, loaded data)
@@ -103,8 +127,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hint: const cheapRestaurants = restaurants.filter(function(restaurant) { })
         
         // YOUR CODE HERE:
+        const cheapRestaurants = restaurants.filter(function(restaurant) {
+            return restaurant.price === '$';
+        });
+
+        let html = `<p>Found ${cheapRestaurants.length} affordable restaurants:</p>`;
+        cheapRestaurants.forEach(function(restaurant) {
+            html +=
+                `<div class="restaurant-item">
+                     <div class="restaurant-name">${restaurant.name}</div>
+                     <span class="restaurant-price">Price: ${restaurant.price}</span>
+                 </div>`;
+          });                
         
-        
+        filteredList.innerHTML = html;
     });
     
     // Show restaurant names (same logic, loaded data)
@@ -120,8 +156,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hint: const names = restaurants.map(function(restaurant) { })
         
         // YOUR CODE HERE:
+        const names = restaurants.map(function(restaurant) {
+            return restaurant.name;
+        });
+
+        let html = '<ul class="name-list">';
+        names.forEach(function(name) {
+            html += `<li>${name}</li>`;
+        });
         
-        
+        html += '</ul>';
+
+        mappedList.innerHTML = html;
     });
     
     // ============================================
@@ -150,7 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Hint: Create error message div with helpful text
             
             // YOUR CODE HERE:
-            
+            errorDisplay.innerHTML = `
+    <div class="error-message">
+        <p><strong>Oops! We couldn't load that data.</strong></p>
+        <p>The file may be missing or your connection may be down. Click the button to try again.</p>
+    </div>`;
             
             console.error('Demonstrated error:', error);
         }
